@@ -3,8 +3,10 @@ package com.auth.Authentication.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys; // Import Keys class
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +14,12 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
-    private final String SECRET_KEY = "a7df60475bdacd0fb1969757fb682f71e8c0d3949ccfdc1667585671e1d6312c"; // Change this to a secure key.
+    private final SecretKey secretKey; // Use SecretKey instead of String
+
+    public JwtTokenProvider() {
+        // Generate a secure key for HS512
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    }
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -21,14 +28,14 @@ public class JwtTokenProvider {
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours expiration time.
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .signWith(secretKey) // Use the generated secret key
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
-                    .setSigningKey(SECRET_KEY)
+                    .setSigningKey(secretKey) // Use the generated secret key
                     .build()
                     .parseClaimsJws(token);
             return true;
@@ -39,7 +46,7 @@ public class JwtTokenProvider {
 
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(secretKey) // Use the generated secret key
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

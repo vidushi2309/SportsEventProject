@@ -5,7 +5,7 @@ import com.auth.Authentication.dto.LoginRequest;
 import com.auth.Authentication.dto.RegisterRequest;
 import com.auth.Authentication.entity.User;
 import com.auth.Authentication.Services.UserService;
-import com.auth.Authentication.security.JwtTokenProvider;
+import com.auth.Authentication.security.JwtTokenProvider; // Import JWT utility class
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +28,16 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        // Implement login logic and generate JWT token here.
+        // Authenticate the user
         User user = userService.authenticateUser(request);
 
         // Generate JWT token
         String token = jwtTokenProvider.generateToken(user.getUsername());
 
-        // Return token in response
-        return ResponseEntity.ok(new AuthResponse(token));     }
+        // Create a response message
+        String message = "Login successful for user: " + user.getUsername();
+
+        // Return token and message in response
+        return ResponseEntity.ok(new AuthResponse(token, message)); // Create an AuthResponse class to hold the token and message
+    }
 }

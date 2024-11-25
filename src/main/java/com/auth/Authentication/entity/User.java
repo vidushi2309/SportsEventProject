@@ -1,6 +1,7 @@
 package com.auth.Authentication.entity;
 
 import jakarta.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ public class User {
     private String username;
 
     private String email; // New field for email
-
+    private String name;
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -64,5 +65,10 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+
+    public String getName() {
+        return name; // Full name of the user
     }
 }

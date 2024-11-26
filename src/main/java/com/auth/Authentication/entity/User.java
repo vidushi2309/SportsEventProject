@@ -1,7 +1,9 @@
 package com.auth.Authentication.entity;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -71,4 +73,6 @@ public class User {
     public String getName() {
         return name; // Full name of the user
     }
+
+
 }

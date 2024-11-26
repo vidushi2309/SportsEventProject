@@ -58,10 +58,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User authenticateUser(LoginRequest request) {
+        // Find the user by username
         User user = userRepository.findByUsername(request.getUsername());
-        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+
+        if (user == null) {
+            throw new ApiException("User not found");
+        }
+
+        // Compare the plaintext password from the request with the hashed password stored in the database
+        boolean passwordMatches = passwordEncoder.matches(request.getPassword(), user.getPassword());
+
+
+        if (!passwordMatches) {
             throw new ApiException("Invalid username or password");
         }
+
+        // Return the user if authentication is successful
         return user;
     }
+
 }

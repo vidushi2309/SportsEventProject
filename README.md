@@ -37,5 +37,6 @@ cd SportsEventProject
 spring.datasource.username=yourusername
 spring.datasource.password=yourpassword
 ```
+- Then go to the created database in MySQL workbench and then go to roles table and keep id 1 - ADMIN 2- COACH 3-ATHLETE
 ### 3. Frontend is stored in "src\main\resources\static"
 

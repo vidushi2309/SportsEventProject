@@ -26,7 +26,7 @@ This project is a web-based platform designed to manage sports events and monito
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/vidushi2309/SportsEventProject/tree/project
+git clone https://github.com/vidushi2309/SportsEventProject.git
 cd SportsEventProject
 ```
 
